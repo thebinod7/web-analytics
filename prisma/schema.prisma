@@ -14,9 +14,41 @@ datasource db {
 }
 
 model User {
+  id        Int        @id @default(autoincrement())
+  uuid      String     @unique @db.Uuid()
+  sessionId String     @unique
+  country   String?
+  ipAddress String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  UserPage  UserPage[]
+
+  @@map("users")
+}
+
+model UserPage {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
+  uuid      String   @unique @db.Uuid()
+  userId    Int
+  pageId    Int
+  User      User     @relation(fields: [userId], references: [id])
+  Page      Page     @relation(fields: [pageId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("user_pages")
+}
+
+model Page {
+  id          Int        @id @default(autoincrement())
+  uuid        String     @unique @db.Uuid()
+  pageUrl     String
+  visitCount  Int        @default(0)
+  visitSource String?
+  duration    Int?       @default(0) // Time in miliseconds
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  UserPage    UserPage[]
+
+  @@map("pages")
 }
