@@ -1,0 +1,20 @@
+Capture { country, ipAddress, duration, pageVisited }
+
+Views by country
+Views by page
+Views by source (Direct, Referral, Organic, Organic Social, Unassigned)
+Views count
+Users count
+New users?
+
+
+
+======DB_User_Schema=====
+country
+ipAddress
+pageVisited
+source
+visitCount
+duration
+sessionId UNIQUE
+
