@@ -5,7 +5,7 @@ import { WinstonModule } from 'nest-winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { loggerInstance } from './logger/logger.winston';
 
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
