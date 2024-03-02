@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+  create(dto: CreateUserDto) {
+    const userPayload = {
+      uuid: uuidv4(),
+      sessionId: '123',
+      country: dto.country,
+      ipAddress: dto.ipAddress,
+    };
+    return this.prisma.user.create({ data: userPayload });
   }
 
   findAll() {
