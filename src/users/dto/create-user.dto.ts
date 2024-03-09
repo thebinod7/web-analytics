@@ -35,11 +35,6 @@ export class CreateUserDto {
 
   @IsNumber()
   @IsOptional()
-  @ApiProperty({ example: 1, description: 'Number of visits' })
-  visitCount?: number;
-
-  @IsNumber()
-  @IsOptional()
   @ApiProperty({ example: 1000, description: 'Duration of the visit' })
   duration?: number;
 }

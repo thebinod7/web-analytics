@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id          Int        @id @default(autoincrement())
-  uuid        String     @unique @db.Uuid()
+  uuid        String     @unique @default(uuid()) @db.Uuid()
   sessionId   String     @unique
   country     String?
   ipAddress   String?
@@ -30,7 +30,7 @@ model User {
 
 model UserPage {
   id   Int    @id @default(autoincrement())
-  uuid String @unique @db.Uuid()
+  uuid String @unique @default(uuid()) @db.Uuid()
 
   visitCount Int      @default(0)
   duration   Int?     @default(0) // Time in miliseconds
@@ -47,7 +47,7 @@ model UserPage {
 
 model Page {
   id        Int        @id @default(autoincrement())
-  uuid      String     @unique @db.Uuid()
+  uuid      String     @unique @default(uuid()) @db.Uuid()
   pageUrl   String     @unique
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -55,3 +55,10 @@ model Page {
 
   @@map("pages")
 }
+
+//========Features==========
+// Total views by pages
+// Total views by country
+// Total views by source
+// Total users
+// Total views
