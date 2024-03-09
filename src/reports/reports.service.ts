@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReportDto } from './dto/create-report.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ReportsService {
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all reports`;
+  async stats() {
+    const data = {
+      usersCount: 0,
+      visitCount: 0,
+    };
+    const users = await this.prisma.user.count();
+    const result = await this.prisma.userPage.aggregate({
+      _sum: { visitCount: true },
+    });
+
+    if (result?._sum) data.visitCount = result._sum.visitCount;
+    if (users) data.usersCount = users;
+    return data;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} report`;
   }
 
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return `This action updates a #${id} report`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} report`;
+  async visitByPage() {
+    const d = await this.prisma.userPage.groupBy({
+      by: ['pageId'],
+      _sum: { visitCount: true },
+    });
+    console.log('D=>', d);
+    return d;
   }
 }
