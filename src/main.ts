@@ -23,8 +23,8 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   const config = new DocumentBuilder()
-    .setTitle('Web Analyics')
-    .setDescription('API service for analytics')
+    .setTitle('Apply Visa')
+    .setDescription('API server for Apply Visa')
     .setVersion('1.0')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },

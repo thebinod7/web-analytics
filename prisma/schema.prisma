@@ -13,52 +13,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ROLE {
+  ADMIN
+  USER
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+  UNKNOWN
+}
+
 model User {
   id          Int        @id @default(autoincrement())
   uuid        String     @unique @default(uuid()) @db.Uuid()
-  sessionId   String     @unique
-  country     String?
-  ipAddress   String?
-  userAgent   String?
-  visitSource String?
+  email       String     @unique // Email or Phone
+  phone       String     @unique
+  role        ROLE       @default(USER)
+  name        String
+  gender      GENDER     @default(UNKNOWN)
+  otp         String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  UserPage    UserPage[]
+  deletedAt   DateTime? 
 
   @@map("users")
 }
 
-model UserPage {
-  id   Int    @id @default(autoincrement())
-  uuid String @unique @default(uuid()) @db.Uuid()
 
-  visitCount Int      @default(0)
-  duration   Int?     @default(0) // Time in miliseconds
-  userId     Int
-  pageId     Int
-  User       User     @relation(fields: [userId], references: [id])
-  Page       Page     @relation(fields: [pageId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 
-  @@unique([userId, pageId], name: "unique_user_page")
-  @@map("user_pages")
-}
 
-model Page {
-  id        Int        @id @default(autoincrement())
-  uuid      String     @unique @default(uuid()) @db.Uuid()
-  pageUrl   String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  UserPage  UserPage[]
-
-  @@map("pages")
-}
-
-//========Features==========
-// Total views by pages
-// Total views by country
-// Total views by source
-// Total users ✅
-// Total views ✅
